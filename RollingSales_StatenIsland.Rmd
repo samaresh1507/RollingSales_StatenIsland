@@ -1,0 +1,72 @@
+---
+title: "RollingSales_StatenIsland"
+author: "Sandhya,Aravind,Mamadou"
+date: "June 5, 2016"
+output: 
+  html_document:
+   keep_md: true
+---
+
+##This R markdown is created to demonstrate Collaboration and Versioning as explained in Unit 4.This group project involves working on a data set to analyze the real estate property prices in Staten Island and develop meaningful insights about the sale price of Family Dwellings.
+
+```{r}
+#First Start off by by loading the Plyr Library
+## It is and R package that allows easy manipulation of large data set  by manipulating data values and putting it back together.
+library(plyr)
+#Next step is to create a new R Project and setting the working directory to a directory/folder on your local machine Where the Project files will be organized.
+setwd("C:\\Users\\samaresh\\SMU\\Doing Datascience\\week4\\RollinSales_Staten")
+#Read the Staten Island data file after saving it as a csv
+staten <- read.csv("Data/rollingsales_statenisland.csv",skip=4,header=TRUE)
+#Exploratory data analysis by looking at the summary data 
+head(staten)
+summary(staten)
+str(staten)
+#Data Cleanup to eliminate spaces and getting rid of leading digits
+staten$SALE.PRICE.N <- as.numeric(gsub("[^[:digit:]]","", staten$SALE.PRICE))
+count(is.na(staten$SALE.PRICE.N))
+names(staten) <- tolower(names(staten)) # make all variable names lower case
+staten$gross.sqft <- as.numeric(gsub("[^[:digit:]]","", staten$gross.square.feet))
+staten$land.sqft <- as.numeric(gsub("[^[:digit:]]","", staten$land.square.feet))
+staten$year.built <- as.numeric(as.character(staten$year.built))
+
+## analysing the subject of interest which is the Sales Price
+attach(staten)
+hist(sale.price.n) 
+detach(staten)
+
+## Eliminate all the 0$ sales
+staten.sale <- staten[staten$sale.price.n!=0,]
+## Plot the Sqft vs Sales Price
+plot(staten.sale$gross.sqft,staten.sale$sale.price.n)
+## Since the graph is right skewed we will do a log transformation
+plot(log10(staten.sale$gross.sqft),log10(staten.sale$sale.price.n))
+
+## Analysing sale price of family dwellings
+staten.homes <- staten.sale[which(grepl("FAMILY",staten.sale$building.class.category)),]
+dim(staten.homes)
+## Plot the Sqft vs Sales Price for family dwellings after log transformation
+plot(log10(staten.homes$gross.sqft),log10(staten.homes$sale.price.n))
+##Analyse the outliers
+summary(staten.homes[which(staten.homes$sale.price.n<100000),])
+
+
+## outliers that seem like they weren't actual sales
+staten.homes$outliers <- (log10(staten.homes$sale.price.n) <=5) + 0
+## remove outliers that seem like they weren't actual sales
+staten.homes <- staten.homes[which(staten.homes$outliers==0),]
+## plot the sqft vs sales price for family dwellings above 100K
+plot(log(staten.homes$gross.sqft),log(staten.homes$sale.price.n))
+
+
+##Histogram to analyse the sales price for family dwellings after removing outliers 
+hist(staten.homes$sale.price.n)
+##Histogram to analyse the sales price for family dwellings after removing outliers after log transformation as the above is right skewed
+hist(log10(staten.homes$sale.price.n))
+#display the mean sale price and mark it on the histogram in blue
+mx <-  mean(log10(staten.homes$sale.price.n))
+abline(v = mx, col = "blue", lwd = 2)
+#display the mean sale price and mark it on the histogram in red
+medx <- median(log10(staten.homes$sale.price.n))
+abline(v = medx, col = "red", lwd = 0.1)
+```
+
