@@ -17,7 +17,7 @@ library(plyr)
 
 ```r
 #Next step is to create a new R Project and setting the working directory to a directory/folder on your local machine Where the Project files will be organized.
-setwd("C:\\Users\\samaresh\\SMU\\Doing Datascience\\week4\\RollinSales_Staten")
+setwd("C:\\Users\\samaresh\\SMU\\Doing Datascience\\week4\\RollingSales_StatenIsland")
 #Read the Staten Island data file after saving it as a csv
 staten <- read.csv("Data/rollingsales_statenisland.csv",skip=4,header=TRUE)
 #Exploratory data analysis by looking at the summary data 
