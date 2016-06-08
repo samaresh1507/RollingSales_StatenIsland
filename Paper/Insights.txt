@@ -1,0 +1,13 @@
+From the summary of sales price in staten island we observed that there were a lot of missing values 
+
+We performed data clean up on the sales price & sqft columns to eliminate these missing values
+
+We eliminated irrevalant data prices (prices having NA , $-)
+
+For our analysis we considered only the family dwellings
+
+We eliminated the outliers - sales price less than 100K
+
+Plotted sqft vs sales price graph. Since this was right skewed we plotted the log transformation
+
+Based on the analysis we find a strong linear co-relation b/w sale price and sqft.

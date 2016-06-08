@@ -322,7 +322,7 @@ staten.homes$outliers <- (log10(staten.homes$sale.price.n) <=5) + 0
 ## remove outliers that seem like they weren't actual sales
 staten.homes <- staten.homes[which(staten.homes$outliers==0),]
 ## plot the sqft vs sales price for family dwellings above 100K
-plot(log(staten.homes$gross.sqft),log(staten.homes$sale.price.n))
+plot(log10(staten.homes$gross.sqft),log10(staten.homes$sale.price.n))
 ```
 
 ![](RollingSales_StatenIsland_files/figure-html/unnamed-chunk-1-5.png)<!-- -->
